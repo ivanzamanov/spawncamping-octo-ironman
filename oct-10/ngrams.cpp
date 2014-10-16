@@ -26,6 +26,7 @@ public:
       offset++;
       str[offset] = 0;
     }
+    str[offset - 1] = 0;
     if(i != n)
       *str = 0;
     else if(secondWordPos != 0)
