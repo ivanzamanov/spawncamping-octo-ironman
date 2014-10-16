@@ -2,6 +2,20 @@
 #include<fstream>
 #include<cstring>
 
+char toDec(char c) {
+  if(c >= '0' && c <= '9') {
+    return c - '0';
+  } else {
+    return c - 'A' + 10;
+  }
+}
+
+unsigned char hexToByte(const char* hex) {
+  unsigned char result = 0;
+  result = (toDec(*hex) << 4) | toDec(*(hex+1));
+  return result;
+}
+
 struct Pixel {
   char r;
   char g;
@@ -11,6 +25,13 @@ struct Pixel {
     this->r = r;
     this->g = g;
     this->b = b;
+  };
+  void operator()(const char* color) {
+    if(*color == '#') {
+      r = hexToByte(color+1);
+      g = hexToByte(color+3);
+      b = hexToByte(color+5);
+    }
   };
 };
 
@@ -63,12 +84,11 @@ int main() {
   for(int x=0; x<img.getWidth(); x++) {
     for(int y=0; y<img.getHeight(); y++) {
       img(x,y)(x, y, x & y);
+      //img(x,y)("#CDCDCD");
     }
   }
-  std::ofstream output("test.ppm"), output2("test2.ppm");
+
+  std::ofstream output("test.ppm");
   img.print(output);
   output.close();
-
-  Image img2("test.ppm");
-  img2.print(output2);
 }
