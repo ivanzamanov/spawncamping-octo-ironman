@@ -8,8 +8,14 @@ void testPrefix(const char* expr, int expected) {
   printf("%s = %d, expected = %d\n", expr, eval_straight_polish(expr), expected);
 }
 
+void testBraces(const char* expr) {
+  printf("Validating expression: %s\nResult: %d\n", expr, (int)validateBraces(expr));
+}
+
 int main() {
-  testPrefix("+ 3 + 4 * 5 4", 27);
+  testBraces("(())");
+  testBraces("(()}");
+  // testPrefix("+ 3 + 4 * 5 4", 27);
   // testPrefix("-,*,/,15,-,7,+,1,1,3,+,2,+,1,1", 5);
   // testPrefix("++4+3,3+2", 12);
   // testPrefix("/,-,*,2,5,*,1,2,-,11,9", 4);

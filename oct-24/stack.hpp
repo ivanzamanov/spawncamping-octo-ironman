@@ -55,7 +55,10 @@ public:
   int getCap() {
     return cap;
   };
-private:
+  virtual void print() {
+    
+  };
+protected:
   T* data;
   int cap;
   int head;
@@ -82,6 +85,26 @@ private:
     delete data;
     data = newData;
     cap = newCap;
+  };
+};
+
+class IntStack : public Stack<int> {
+public:
+  void print() {
+    for(int i = 0; i<=head; i++) {
+      printf("%d ", data[i]);
+    }
+    printf("\n");
+  };
+};
+
+class CharStack : public Stack<char> {
+public:
+  void print() {
+    for(int i = 0; i<=head; i++) {
+      printf("%c ", data[i]);
+    }
+    printf("\n");
   };
 };
 
