@@ -38,7 +38,7 @@ public:
     if(head > 2 && head == cap / 4) {
       shrink();
     }
-    return data[--head];
+    return data[head--];
   };
   T& peek() {
     return data[head];
@@ -49,6 +49,9 @@ public:
   operator bool() {
     return isEmpty();
   };
+  int getSize() {
+    return head + 1;
+  };
   int getCap() {
     return cap;
   };
@@ -56,6 +59,7 @@ private:
   T* data;
   int cap;
   int head;
+
   // Merge in a single function
   void expand() {
     int newCap = cap * 2;
