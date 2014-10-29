@@ -1,66 +1,97 @@
 #ifndef __UTIL_H__
 #define __UTIL_H__
 
-#include<string>
+#include<cstring>
 #include<sstream>
 
 #include"stack.hpp"
 
 #define SEPARATOR '_'
 
-static int applyOperation(char op, int operand1, int operand2) {
-  switch(op) {
-  case '*':
-    return operand1 * operand2;
-  case '+':
-    return operand1 + operand2;
-  case '-':
-    return operand1 - operand2;
-  case '/':
-    return operand1 / operand2;
-  default:
-    return 0;
-  }
-}
+// static int applyOperation(char op, int operand1, int operand2) {
+//   switch(op) {
+//   case '*':
+//     return operand1 * operand2;
+//   case '+':
+//     return operand1 + operand2;
+//   case '-':
+//     return operand1 - operand2;
+//   case '/':
+//     return operand1 / operand2;
+//   default:
+//     return 0;
+//   }
+// }
 
-static bool isOp(char c) {
-  return c == '*' || c == '+' || c == '-' || c == '/';
-}
+// static bool isOp(char c) {
+//   return c == '*' || c == '+' || c == '-' || c == '/';
+// }
 
-static bool isNumeric(char c) {
-  return c >= '0' && c <= '9';
-}
+// static bool isNumeric(char c) {
+//   return c >= '0' && c <= '9';
+// }
 
-int eval_straight_polish(const char* str) {
-  std::stringstream expr(str);
-  CharStack operations;
-  IntStack operands;
+// int eval_straight_polish(const char* str) {
+//   std::stringstream stream(reverse);
+//   IntStack operands;
+//   char c = stream.get();
+//   int operand;
+//   if(isNumeric(c)) {
+//     stream.unget();
+//     stream >> operand;
+//     operands.push(operand);
+//   } else if(isOp(c)) {
+//     operands.push(' ');
+//     operands.push();
+//   }
 
-  while(!expr.eof()) {
-    char c = expr.get();
-    if(isNumeric(c)) {
-      expr.unget();
-      int operand;
-      expr >> operand;
-      operands.push(operand);
-      while(operands.getSize() >= 2 && operations.peek() == SEPARATOR) {
-        operations.print();
-        operands.print();
-        operations.pop();
-        char op = operations.pop();
-        int operand1 = operands.pop();
-        int operand2 = operands.pop();
-        int applied = applyOperation(op, operand1, operand2);
-        operands.push(applied);
-      }
-    } else if(isOp(c)){
-      operations.push(c);
-      operations.push(SEPARATOR);
-    }
-  }
-  return operands.pop();
-}
+//   while(!stream.eof()) {
+//     c = stream.get();
+//     if(isNumeric(c)) {
+//       stream.unget();
+//       stream >> operand;
+//       operands.push(operand);
+//     } else if(isOp(c)) {
+//       int operand1 = operands.pop();
+//       int operand2 = operands.pop();
+//       int result = applyOperation(c, operand1, operand2);
+//       operands.push(result);
+//     }
+//   }
+//   return operands.pop();
+// }
 
+// int eval_straight_polish(const char* str) {
+//   int length = strlen(str);
+//   char* reverse = new char[length + 1];
+//   reverse[length] = 0;
+//   for(int i=0; i<length; i++)
+//     reverse[i] = str[length - i - 1];
+  
+//   IntStack operands;
+//   CharStack operations;
+//   std::stringstream stream(reverse);
+
+//   while(!stream.eof()) {
+//     char c = stream.get();
+//     if(isNumeric(c)) {
+//       stream.unget();
+//       int operand;
+//       stream >> operand;
+//       operands.push(operand);
+//     } else if(isOp(c)) {
+//       int operand1 = operands.pop();
+//       int operand2 = operands.pop();
+//       int result = applyOperation(c, operand1, operand2);
+//       operands.push(result);
+//     }
+//   }
+//   return operands.pop();
+// }
+
+//
+// Brace check utils
+//
 static void fillPair(unsigned char* table, unsigned char c1, unsigned char c2) {
   table[c1] = c2;
   table[c2] = c1;
@@ -108,5 +139,31 @@ int validateBraces(const char* expr) {
   }
   return 0;
 }
+
+//
+// Permutations utils
+//
+struct CharRange {
+  CharRange(char start, char end): start(start), end(end) { };
+  char start;
+  char end;
+  int length() const {
+    return end - start + 1;
+  };
+};
+
+struct RangeIterator {
+  RangeIterator(const RangeIterator& other): start(other.start), end(other.end), current(other.current) { };
+  RangeIterator(const CharRange& range): start(range.start), end(range.end), current(range.start) { };
+  RangeIterator(char start, char end): start(start), end(end), current(start) { };
+
+  int next() {
+    return current++;
+  };
+  bool hasNext() {
+    return current < end;
+  };
+  char start, end, current;
+};
 
 #endif

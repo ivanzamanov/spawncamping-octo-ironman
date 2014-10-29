@@ -10,7 +10,7 @@ public:
     data = new T[cap];
   };
   virtual ~Stack<T>() {
-    delete data;
+    delete[] data;
   };
   Stack<T>(const Stack<T>& stack): cap(stack.cap), head(stack.head) {
     data = new T[cap];
@@ -19,7 +19,7 @@ public:
     }
   };
   const Stack<T> operator=(const Stack<T> stack) {
-    delete data;
+    delete[] data;
     cap = stack.cap;
     head = stack.head;
     data = new T[cap];
@@ -44,7 +44,7 @@ public:
     return data[head];
   };
   bool isEmpty() {
-    return head >= 0;
+    return head < 0;
   };
   operator bool() {
     return isEmpty();
@@ -66,12 +66,11 @@ protected:
   // Merge in a single function
   void expand() {
     int newCap = cap * 2;
-    printf("Expanding to %d\n", newCap);
     T* newData = new T[newCap];
     for(int i=0; i<cap; i++) {
       newData[i] = data[i];
     }
-    delete data;
+    delete[] data;
     data = newData;
     cap = newCap;
   };
@@ -82,7 +81,7 @@ protected:
     for(int i=0; i<newCap; i++) {
       newData[i] = data[i];
     }
-    delete data;
+    delete[] data;
     data = newData;
     cap = newCap;
   };

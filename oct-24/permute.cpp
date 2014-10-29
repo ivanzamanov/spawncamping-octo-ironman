@@ -1,30 +1,11 @@
 #include<iostream>
 
-struct CharRange {
-  CharRange(char start, char end): start(start), end(end) { };
-  char start;
-  char end;
-  int length() const {
-    return end - start + 1;
-  };
-};
-
-struct RangeIterator {
-  RangeIterator(const CharRange& range): start(range.start), end(range.end), current(range.start) { };
-  RangeIterator(char start, char end): start(start), end(end), current(start) { };
-
-  int next() {
-    return current++;
-  };
-  bool hasNext() {
-    return current < end;
-  };
-  char start, end, current;
-};
+#include"util.hpp"
+#include"stack.hpp"
 
 void permute(char* buffer, int index, int total, const CharRange& range, char used[10]) {
-  RangeIterator it(range);
   if(index == total - 1) {
+    RangeIterator it(range);
     while(it.hasNext()) {
       char i = it.next();
       if(used[i - '0'] == 0) {
@@ -33,6 +14,7 @@ void permute(char* buffer, int index, int total, const CharRange& range, char us
       }
     }
   } else {
+    RangeIterator it(range);
     while(it.hasNext()) {
       char i = it.next();
       if(used[i - '0'] == 0) {
@@ -53,8 +35,9 @@ void permute_chars(int count, const CharRange& range) {
   buffer[count] = 0;
   permute(buffer, 0, count, range, used);
   delete buffer;
+  delete used;
 }
 
 int main() {
-  permute_chars(3, CharRange('0', '4'));
+  permute_chars(5, CharRange('0', '5'));
 }
