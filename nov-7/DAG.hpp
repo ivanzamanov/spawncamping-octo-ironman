@@ -9,6 +9,10 @@
 
 class DirectedAcyclicGraph {
 public:
+  typedef std::vector<int> IntStack;
+  typedef std::vector< ChildrenList > NodesList;
+  typedef std::vector<int> ChildrenList;
+
   DirectedAcyclicGraph();
   DirectedAcyclicGraph(const DirectedAcyclicGraph& other);
   ~DirectedAcyclicGraph();
@@ -17,6 +21,8 @@ public:
   int vertex();
   // Delete the given vertex from the graph
   void delete_vertex(int v);
+  // Obtain a list of all children of the given vertex
+  const ChildrenList children(int v);
   // Add an edge between the given vertices
   // if one does not already exist
   void edge(int src, int dest);
@@ -27,11 +33,8 @@ public:
   void deleteEdge(int src, int dest);
 
 private:
-  typedef std::vector<int> IntStack;
-  IntStack deleted;
-  typedef std::vector<int> ChildrenList;
-  typedef std::vector< ChildrenList > NodesList;
 
+  IntStack deleted;
   NodesList nodes;
   int lastNode;
 };

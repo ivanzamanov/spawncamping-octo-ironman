@@ -37,6 +37,12 @@ void DirectedAcyclicGraph::delete_vertex(int v) {
   }
 }
 
+const DirectedAcyclicGraph::ChildrenList& DirectedAcyclicGraph::children(int v) {
+  if(v > lastNode) 
+    return DirectedAcyclicGraph::ChildrenList();
+  return nodes[v];
+}
+
 void DirectedAcyclicGraph::edge(int src, int dest) {
   if(!has_edge(src, dest)) {
     nodes[src].push_back(dest);
