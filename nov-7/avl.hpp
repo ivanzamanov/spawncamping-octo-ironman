@@ -20,8 +20,10 @@ public:
   void remove(int n);
   bool search(int n);
 
-private:
+  void DFS(void (*visit)(AVLNode*));
   AVLNode* root;
-}
+private:
+  //  AVLNode* root;
+};
 
 #endif

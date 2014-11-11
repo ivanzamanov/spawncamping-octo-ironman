@@ -1,3 +1,5 @@
+#include<stack>
+
 #include"avl.hpp"
 
 static bool searchInNode(AVLNode* node, int n);
@@ -13,13 +15,14 @@ AVLTree::AVLTree(const AVLTree& tree) {
   copyNodeRecursive(root, tree.root);
 }
 
-~AVLTree() {
+AVLTree::~AVLTree() {
   deleteNodes(root);
 }
 
-const AVLTree& operator=(const AVLTree& tree) {
+const AVLTree& AVLTree::operator=(const AVLTree& tree) {
   deleteNodes(root);
   copyNodeRecursive(root, tree.root);
+  return *this;
 }
 
 void AVLTree::insert(int n) {
@@ -71,11 +74,11 @@ int height(AVLNode* node) {
 }
 
 void insertInNode(AVLNode*& node, int n) {
-  if(!&node)
+  if(!node)
     node = new AVLNode(n);
-  else if(n > node.data)
+  else if(n > node->data)
     insertInNode(node->right, n);
-  else if (n < node.data)
+  else if (n < node->data)
     insertInNode(node->left, n);
 
   // else n == node->data, return
@@ -85,9 +88,9 @@ bool searchInNode(AVLNode* node, int n) {
   if(!node)
     return false;
 
-  if(n > node.data)
+  if(n > node->data)
     return searchInNode(node->right, n);
-  else if (n < node.data)
+  else if (n < node->data)
     return searchInNode(node->left, n);
   else
     return true;
@@ -96,8 +99,10 @@ bool searchInNode(AVLNode* node, int n) {
 void removeFromNode(AVLNode*& node, int n) {
   if(!node)
     return;
+
   if(node->data == n) {
     int childCount = ((bool)node->left) + ((bool)node->right);
+
     if(childCount == 0) {
       delete node;
       node = 0;
@@ -110,9 +115,36 @@ void removeFromNode(AVLNode*& node, int n) {
       removeFromNode(child, child->data);
     }
   } else {
-    if(n > node.data)
+    if(n > node->data)
       removeFromNode(node->right, n);
-    else if (n < node.data)
+    else if (n < node->data)
       removeFromNode(node->left, n);
   }
 }
+
+void dfsHelper(AVLNode* node, void (*visit)(AVLNode*)) {
+  if(node) {
+    visit(node);
+    dfsHelper(node->left, visit);
+    dfsHelper(node->right, visit);
+  }
+}
+
+void AVLTree::DFS(void (*visit)(AVLNode*)) {
+  dfsHelper(root, visit);
+}
+
+void rotateLeft(AVLNode*& root) {
+  AVLNode* saved = root->right;
+  root->right = saved->left;
+  saved->left = root;
+  root = saved;
+}
+
+void rotateRight(AVLNode*& root) {
+  AVLNode* saved = root->left;
+  root->left = saved->right;
+  saved->right = root;
+  root = saved;
+}
+

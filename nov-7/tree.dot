@@ -1,0 +1,8 @@
+digraph {
+rankdir = LR;
+4 [shape=circle]
+4 -> 3 [label=" :0"]
+4 -> 5 [label=" :0"]
+3 [shape=circle]
+5 [shape=circle]
+}
