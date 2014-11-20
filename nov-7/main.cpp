@@ -4,6 +4,7 @@
 #include"dot.hpp"
 
 extern void rotateLeft(AVLNode* &node);
+extern void rotateRight(AVLNode* &node);
 
 DotPrinter printer("tree.dot");
 
@@ -20,12 +21,14 @@ void print(AVLNode* node) {
 int main() {
   AVLTree tree;
   tree.insert(3);
-  tree.insert(4);
   tree.insert(5);
+  tree.insert(4);
 
   //tree.DFS(print);
 
+  rotateRight(tree.root->right);
   rotateLeft(tree.root);
+  
 
   printer.start();
   tree.DFS(print);

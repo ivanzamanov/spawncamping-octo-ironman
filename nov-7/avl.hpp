@@ -2,11 +2,12 @@
 #define __AVL_TREE_H__
 
 struct AVLNode {
-  AVLNode(): left(0), right(0) { };
-  AVLNode(int data): left(0), right(0), data(data) { };
+  AVLNode(): left(0), right(0), height(0) { };
+  AVLNode(int data): left(0), right(0), data(data), height(0) { };
   AVLNode* left;
   AVLNode* right;
   int data;
+  int height;
 };
 
 class AVLTree {

@@ -73,15 +73,33 @@ int height(AVLNode* node) {
     return 0;
 }
 
-void insertInNode(AVLNode*& node, int n) {
-  if(!node)
-    node = new AVLNode(n);
-  else if(n > node->data)
-    insertInNode(node->right, n);
-  else if (n < node->data)
-    insertInNode(node->left, n);
+// If balanced, will return 0,
+// -2 - must rotate left
+// +2 - must rotate right
+int getBalance(AVLNode* node) {
+  int leftHeight = node->left && node->left->height;
+  int rightHeight = node->right && node->right->height;
+  return leftHeight - rightHeight;
+}
 
-  // else n == node->data, return
+void updateHeight(AVLNode* node) {
+  bool hasChildren = node-> left & node->right;
+  node->height = (hasChildren) + max(node->left && node->left->height, node->right && node->right->height);
+}
+
+void insertInNode(AVLNode*& node, int n) {
+  if(!node) {
+    node = new AVLNode(n);
+  } else if(n > node->data) {
+    insertInNode(node->right, n);
+    updateHeight(node);
+    rebalance(node);
+  }
+  else if (n < node->data) {
+    insertInNode(node->left, n);
+    updateHeight(node);
+    rebalance(node);
+  }
 }
 
 bool searchInNode(AVLNode* node, int n) {
